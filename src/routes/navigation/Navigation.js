@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSignOutBtnClick: (user) => dispatch(unloadUser())
+        onSignOutBtnClick: () => dispatch(unloadUser())
     }
 }
 

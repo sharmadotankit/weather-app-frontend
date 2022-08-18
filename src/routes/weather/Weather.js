@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import FetchWeather from '../../component/FetchWeather/FetchWeather';
 import { useState, useEffect } from 'react';
-import API_KEY from '../../API_KEY';
+import API_KEY from './API_KEY';
 import './weather.css';
 import { connect } from 'react-redux';
 import { updateCount } from '../../actions';
@@ -43,17 +43,11 @@ function Weather(props) {
     const handleFindWeather = (e) => {
         e.preventDefault();
 
-        fetch(`http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`)
-            .then(response => response.json())
-            .then(data => {
-                setWeather(data)
-                setCallCount(callCount + 1);
-            })
-
         fetch("http://localhost:5000/counter", {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + loggedInUser.token
             },
             body: JSON.stringify({
                 id: loggedInUser.id
@@ -61,10 +55,19 @@ function Weather(props) {
         })
             .then(response => response.json())
             .then(count => {
-                const newState = Object.assign({}, loggedInUser);
-                newState.count = count;
-                updateStateOnCountChange(newState);
-
+                if (count === 'Forbidden') {
+                    alert('You are not authorized to make this request!');
+                } else {
+                    fetch(`http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`)
+                        .then(response => response.json())
+                        .then(data => {
+                            setWeather(data)
+                            setCallCount(callCount + 1);
+                        })
+                    const newState = Object.assign({}, loggedInUser);
+                    newState.count = count;
+                    updateStateOnCountChange(newState);
+                }
             }).catch(err => console.log(err));
     }
 

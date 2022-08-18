@@ -5,7 +5,8 @@ const initialState = {
         id: '',
         email: '',
         name: '',
-        count: ''
+        count: '',
+        token: ''
     },
     isSignedIn: false
 }
@@ -14,6 +15,7 @@ const initialState = {
 export const loadUserOnSignIn = (state = initialState, action = {}) => {
     switch (action.type) {
         case LOAD_USER:
+            console.log(Object.assign({}, state, { loggedInUser: action.payload, isSignedIn: true }));
             return Object.assign({}, state, { loggedInUser: action.payload, isSignedIn: true });
         case UNLOAD_USER:
             return Object.assign({}, state, initialState);
