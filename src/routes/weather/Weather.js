@@ -1,25 +1,47 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FetchWeather from '../../component/FetchWeather/FetchWeather';
 import { useState, useEffect } from 'react';
 import API_KEY from '../../API_KEY';
 import './weather.css';
+import { connect } from 'react-redux';
+import { updateCount } from '../../actions';
 
-export default function Weather() {
+const mapStateToProps = (state) => {
+    return {
+        loggedInUser: state.loadUserOnSignIn.loggedInUser,
+        isSignedIn: state.loadUserOnSignIn.isSignedIn
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateStateOnCountChange: (user) => dispatch(updateCount(user))
+    }
+}
+
+function Weather(props) {
+    const { isSignedIn, loggedInUser, updateStateOnCountChange } = props;
     const [city, setCity] = useState('');
     const [weather, setWeather] = useState('');
     const [callCount, setCallCount] = useState(0);
-    const userid = 2;
+    const navigate = useNavigate();
+
 
     useEffect(() => {
+        if (!isSignedIn) {
+            navigate("/signin");
+        }
         setCallCount(0);
-    }, [])
+
+    }, [isSignedIn, navigate])
 
 
     const handleCityChange = (e) => {
         setCity(e.target.value);
     }
 
-    const handleFindWeather = () => {
+    const handleFindWeather = (e) => {
+        e.preventDefault();
 
         fetch(`http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`)
             .then(response => response.json())
@@ -34,12 +56,15 @@ export default function Weather() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                id: userid
+                id: loggedInUser.id
             })
         })
             .then(response => response.json())
             .then(count => {
-                console.log(count);
+                const newState = Object.assign({}, loggedInUser);
+                newState.count = count;
+                updateStateOnCountChange(newState);
+
             }).catch(err => console.log(err));
     }
 
@@ -59,9 +84,7 @@ export default function Weather() {
                     </div>
 
                     <div className="button-container">
-                        <Link to='/weather'>
-                            <input type="submit" value="Find Weather " onClick={handleFindWeather} />
-                        </Link>
+                        <input type="submit" value="Find Weather " onClick={handleFindWeather} />
                     </div>
                 </form>
             </div>
@@ -78,3 +101,6 @@ export default function Weather() {
         </div>
     )
 }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Weather);

@@ -1,13 +1,23 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { setUser } from '../../actions';
+import { connect } from 'react-redux';
 
 
-export default function Register() {
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateUserOnRegister: (user) => dispatch(setUser(user))
+    }
+}
+
+
+function Register(props) {
     const [registerName, setRegisterName] = useState('');
     const [registerEmail, setRegisterEmail] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { updateUserOnRegister } = props;
 
     const onNameChange = (event) => {
         setRegisterName(event.target.value);
@@ -21,9 +31,6 @@ export default function Register() {
         setRegisterPassword(event.target.value);
     }
 
-    const updateUserOnRegister = (user) => {
-        console.log(user);
-    }
 
     const onRegisterBtnClick = (event) => {
         event.preventDefault();
@@ -117,3 +124,8 @@ export default function Register() {
         </div>
     )
 }
+
+
+
+
+export default connect(null, mapDispatchToProps)(Register);

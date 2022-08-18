@@ -2,12 +2,34 @@
 import './signin.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { setUser } from '../../actions';
+import { connect } from 'react-redux';
 
-function Signin() {
+/*
+const mapStateToProps = (state) => {
+  console.log(state.loadUserOnSignIn.loggedInUser);
+  return {
+    loggedInUser: state.loadUserOnSignIn.loggedInUser,
+    isSignedIn: state.loadUserOnSignIn.isSignedIn
+  }
+}
+*/
+
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateUserOnLogin: (user) => dispatch(setUser(user))
+  }
+}
+
+
+function Signin(props) {
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { updateUserOnLogin } = props;
 
   const onEmailChange = (event) => {
     setSignInEmail(event.target.value);
@@ -16,11 +38,6 @@ function Signin() {
   const onPasswordChange = (event) => {
     setSignInPassword(event.target.value);
   }
-
-  const updateUserOnLogin = (user) => {
-    console.log(user);
-  }
-
 
   const onSignInBtnClick = (event) => {
     event.preventDefault();
@@ -101,4 +118,4 @@ function Signin() {
 }
 
 
-export default Signin;
+export default connect(null, mapDispatchToProps)(Signin);
