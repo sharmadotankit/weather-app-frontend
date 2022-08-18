@@ -1,0 +1,28 @@
+.profile-container{
+    display: flex;  
+   
+}
+
+.container{
+    background-color: white;
+    padding: 1.2rem;
+    min-width: 600px;
+    max-width: 35%;
+    border-radius: 3px;
+    margin: auto;
+    overflow:auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.userInfoDiv{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+.profileImgDiv{
+    width: 100%;
+}
