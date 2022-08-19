@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { setUser } from '../../actions';
 import { connect } from 'react-redux';
+import Cookies from 'universal-cookie';
 
 /*
 const mapStateToProps = (state) => {
@@ -59,6 +60,8 @@ function Signin(props) {
         })
       }).then(response => response.json()).then(user => {
         if (user.id != null) {
+          const cookies = new Cookies();
+          cookies.set('authToken', user.token);
           updateUserOnLogin(user);
           navigate("/weather");
         }

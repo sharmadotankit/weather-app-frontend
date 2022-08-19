@@ -5,6 +5,7 @@ import API_KEY from './API_KEY';
 import './weather.css';
 import { connect } from 'react-redux';
 import { updateCount } from '../../actions';
+import Cookies from 'universal-cookie';
 
 const mapStateToProps = (state) => {
     return {
@@ -25,6 +26,7 @@ function Weather(props) {
     const [weather, setWeather] = useState('');
     const [callCount, setCallCount] = useState(0);
     const navigate = useNavigate();
+    const cookies = new Cookies();
 
 
     useEffect(() => {
@@ -42,12 +44,13 @@ function Weather(props) {
 
     const handleFindWeather = (e) => {
         e.preventDefault();
+        const authToken = cookies.get('authToken');
 
         fetch("http://localhost:5000/counter", {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + loggedInUser.token
+                'Authorization': 'Bearer ' + authToken
             },
             body: JSON.stringify({
                 id: loggedInUser.id

@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { setUser } from '../../actions';
 import { connect } from 'react-redux';
+import Cookies from 'universal-cookie';
 
 
 const mapDispatchToProps = (dispatch) => {
@@ -55,6 +56,8 @@ function Register(props) {
                 if (response.status === 200) {
                     (response.json().then(user => {
                         if (user.id) {
+                            const cookies = new Cookies();
+                            cookies.set('authToken', user.token);
                             updateUserOnRegister(user);
                             navigate("/weather");
                         }

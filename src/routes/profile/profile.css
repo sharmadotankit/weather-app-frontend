@@ -26,3 +26,10 @@
 .profileImgDiv{
     width: 100%;
 }
+
+#profile-pic{
+    border: 1px solid black;
+    border-radius: 50%;
+    margin: 20px;
+    background-color: aquamarine;
+}

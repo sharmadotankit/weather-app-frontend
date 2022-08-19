@@ -25,7 +25,7 @@ function Profile(props) {
             <div className="title">Profile</div>
             <div className="profile-container">
                 <div className='profileImgDiv'>
-                    <img src={`https://robohash.org/${loggedInUser.name}/100*200`} alt="profileImage" />
+                    <img  id='profile-pic'src={`https://robohash.org/${loggedInUser.name}/100*200`} alt="profileImage" />
                 </div>
                 <div className='userInfoDiv'>
                     <span>
