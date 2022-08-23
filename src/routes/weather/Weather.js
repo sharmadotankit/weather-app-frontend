@@ -20,6 +20,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
+
 function Weather(props) {
     const { isSignedIn, loggedInUser, updateStateOnCountChange } = props;
     const [city, setCity] = useState('');
@@ -29,6 +30,36 @@ function Weather(props) {
     const cookies = new Cookies();
 
 
+    // const weatherData = fetchWeatherCall(city);
+
+    // const weatherData = useMemo(() => {
+    //     return fetchWeatherCall(city)
+    // }, [city]);
+
+    // const fetchWeatherCall = (city) => {
+    //     return fetch(`http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`)
+    //         .then(response => response.json())
+    // }
+
+    //  Referential Equality is second use case of use Memo
+
+
+
+    // const getWeather =() => {
+    //     return [a,a+1,a+2];
+    // }
+
+    // <DisplayNumber getWeather={getWeather} />
+
+
+    // const getWeather = useCallBack(() => {
+    //     return [a, a + 1, a + 2];
+    // }, [a]);
+
+
+
+
+
     useEffect(() => {
         if (!isSignedIn) {
             navigate("/signin");
@@ -36,6 +67,17 @@ function Weather(props) {
         setCallCount(0);
 
     }, [isSignedIn, navigate])
+
+
+    const fetchWeather = () => {
+        fetch(`http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`)
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data);
+                setWeather(data)
+                setCallCount(callCount + 1);
+            })
+    };
 
 
     const handleCityChange = (e) => {
@@ -61,12 +103,7 @@ function Weather(props) {
                 if (count === 'Forbidden') {
                     alert('You are not authorized to make this request!');
                 } else {
-                    fetch(`http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`)
-                        .then(response => response.json())
-                        .then(data => {
-                            setWeather(data)
-                            setCallCount(callCount + 1);
-                        })
+                    fetchWeather();
                     const newState = Object.assign({}, loggedInUser);
                     newState.count = count;
                     updateStateOnCountChange(newState);

@@ -35,7 +35,7 @@ function Register(props) {
 
     const onRegisterBtnClick = (event) => {
         event.preventDefault();
-        console.log(registerEmail + registerName + registerPassword);
+        // console.log(registerEmail + registerName + registerPassword);
         if (registerEmail.length === 0 || registerName.length === 0 || registerPassword.length === 0) {
             setError('Please fill valid data');
         }
@@ -58,7 +58,14 @@ function Register(props) {
                         if (user.id) {
                             const cookies = new Cookies();
                             cookies.set('authToken', user.token);
-                            updateUserOnRegister(user);
+                            // console.log(user);
+                            const loggedUser = {
+                                id: user.id,
+                                name: user.name,
+                                email: user.email,
+                                count: user.count
+                            };
+                            updateUserOnRegister(loggedUser);
                             navigate("/weather");
                         }
                     }

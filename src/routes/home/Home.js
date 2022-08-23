@@ -2,8 +2,22 @@ import React from 'react';
 import './home.css';
 import home from '../../assets/home.png';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export default function Home() {
+
+
+const mapStateToProps = (state) => {
+  return {
+    isSignedIn: state.loadUserOnSignIn.isSignedIn
+  }
+}
+
+
+
+function Home(props) {
+
+  const { isSignedIn } = props;
+
   return (
     <div>
 
@@ -26,9 +40,15 @@ export default function Home() {
 
             <br />
 
-            <Link className='register-link' to='/signin'>
-              <button className='get-started-btn'>Get Started 	&rarr;</button>
-            </Link>
+            {isSignedIn ?
+              <Link className='register-link' to='/weather'>
+                <button className='get-started-btn'>Get Started 	&rarr;</button>
+              </Link>
+              : <Link className='register-link' to='/signin'>
+                <button className='get-started-btn'>Get Started 	&rarr;</button>
+              </Link>
+            }
+
 
           </div>
 
@@ -47,3 +67,6 @@ export default function Home() {
 
   )
 }
+
+
+export default connect(mapStateToProps, null)(Home);

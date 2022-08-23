@@ -42,8 +42,8 @@ function Signin(props) {
 
   const onSignInBtnClick = (event) => {
     event.preventDefault();
-    console.log(signInEmail);
-    console.log(signInPassword);
+    // console.log(signInEmail);
+    // console.log(signInPassword);
     if (signInEmail.length === 0 || signInPassword.length === 0) {
       setError("Email and password cannot be empty");
     }
@@ -62,7 +62,13 @@ function Signin(props) {
         if (user.id != null) {
           const cookies = new Cookies();
           cookies.set('authToken', user.token);
-          updateUserOnLogin(user);
+          const loggedUser = {
+            id : user.id,
+            name : user.name,
+            email : user.email,
+            count :  user.count
+          }
+          updateUserOnLogin(loggedUser);
           navigate("/weather");
         }
         else {
